@@ -1,6 +1,7 @@
 name: Executar scraping automaticamente
 
 on:
+  push:                # roda sempre que fizer push
   schedule:
     - cron: '0 12 * * 1,4'  # Segundas e quintas às 12h UTC (9h de Brasília)
   workflow_dispatch:  # Permite executar manualmente pelo GitHub
