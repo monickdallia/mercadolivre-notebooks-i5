@@ -43,7 +43,7 @@ fig2.update_layout(xaxis_title="Preço (R$)", yaxis_title="Quantidade", template
 
 # Gráfico 3: Preço por título (Top 20 mais caros)
 top20 = df_filtrado.sort_values(by="preco", ascending=False).head(20)
-fig3 = px.bar(top20, x="preco", y="titulo", orientation="h", title="🏷️ Top 20 Notebooks Mais Caros", text_auto='.2s')
+fig3 = px.bar(top20, x="preco", y="nome", orientation="h", title="🏷️ Top 20 Notebooks Mais Caros", text_auto='.2s')
 fig3.update_layout(xaxis_title="Preço (R$)", yaxis_title="Título", template="plotly_white")
 
 # Layout
