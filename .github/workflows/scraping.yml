@@ -1,0 +1,33 @@
+name: Executar scraping automaticamente
+
+on:
+  schedule:
+    - cron: '0 12 * * 1,4'  # Segundas e quintas às 12h UTC (9h de Brasília)
+  workflow_dispatch:  # Permite executar manualmente pelo GitHub
+
+jobs:
+  scraping:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clonar repositório
+      uses: actions/checkout@v3
+
+    - name: Configurar Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Instalar dependências
+      run: pip install -r requirements.txt
+
+    - name: Executar script de scraping
+      run: python script.py
+
+    - name: Commit e Push dos dados
+      run: |
+        git config --global user.email "monickdallia@gmail.com"
+        git config --global user.name "monickdallia"
+        git add notebooks_mel.csv grafico_precos.png preco_medio_marca.png faixa_preco.png
+        git commit -m "Atualização automática dos dados via GitHub Actions" || echo "Sem alterações para commitar"
+        git push
