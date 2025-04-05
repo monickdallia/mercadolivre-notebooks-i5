@@ -12,23 +12,23 @@ Este projeto realiza a coleta diária de preços de notebooks com processador In
 
 #Tecnologias Utilizadas
 - `Python 3.10+`
-- `BeautifulSoup` (web scraping)
-- `pandas` (tratamento de dados)
-- `matplotlib` (visualizações)
-- `requests` (requisições HTTP)
-- `GitHub Actions` (automatização)
-- `Streamlit` (dashboard)
+- `BeautifulSoup (web scraping)`
+- `pandas (tratamento de dados)`
+- `matplotlib (visualizações)`
+- `requests (requisições HTTP)`
+- `GitHub Actions (automatização)`
+- `Streamlit (dashboard)`
+  
 ---
 
 #Estrutura dos Arquivos
 
-```bash
-.
-├── notebooks_mel.csv             # Arquivo gerado com os dados coletados
-├── mercadolivre_scraper.py      # Script principal de scraping e análise
-├── grafico_precos.png           # Gráfico da distribuição de preços
-├── preco_medio_marca.png        # Gráfico de preço médio por marca
-├── faixa_preco.png              # Gráfico por faixa de preço
-└── README.md                    # Este documento
-
+`mercado-livre-notebooks-i5/
+├── script.py
+├── notebooks_mel.csv
+├── dashboard/
+│   └── app.py
+│   └── requirements.txt
+└── .github/
+    └── workflows/`
 
