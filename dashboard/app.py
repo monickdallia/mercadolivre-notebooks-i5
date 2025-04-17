@@ -18,7 +18,7 @@ st.markdown("Análise de preços de notebooks com dados coletados automaticament
 # Carregar dados com cache e tempo de expiração
 @st.cache_data(ttl=600)  # 10 minutos
 def carregar_dados():
-    return pd.read_csv("../notebooks_mel.csv")
+    return pd.read_csv("notebooks_mel.csv")
 
 df = carregar_dados()
 
