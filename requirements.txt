@@ -3,3 +3,4 @@ pandas
 streamlit
 matplotlib
 bs4
+plotly
