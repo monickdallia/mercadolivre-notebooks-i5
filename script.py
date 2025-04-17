@@ -43,7 +43,7 @@ df["Preco"] = pd.to_numeric(df["Preco"], errors="coerce")
 df["Preco_promocional"] = pd.to_numeric(df["Preco_promocional"], errors="coerce")
 
 # Análise por marca
-marcas = ['dell', 'lenovo', 'acer', 'asus', 'hp', 'samsung', 'apple']
+marcas = ['dell', 'lenovo', 'acer', 'asus', 'hp', 'samsung', 'macbook']
 df["Marca"] = df["Nome"].str.lower().apply(lambda nome: next((m for m in marcas if m in nome), "Outros"))
 
 # Análise por faixa de preço
