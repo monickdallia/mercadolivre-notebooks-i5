@@ -27,12 +27,8 @@ df.columns = [col.strip().lower().replace(" ", "_") for col in df.columns]
 df["marca"] = df["marca"].str.strip().str.lower().str.capitalize()
 
 # Mostrar data da coleta 
-if "data" in df.columns:
-    try:
-        data_coleta = pd.to_datetime(df["data"]).max().strftime('%d/%m/%Y')
-        st.markdown(f"📅 Dados coletados em: **{data_coleta}**")
-    except:
-        st.warning("⚠️ Coluna 'data' encontrada, mas com valores inválidos.")
+data_coleta = pd.to_datetime(df["data"]).max().strftime('%d/%m/%Y')
+st.markdown(f"📅 Dados coletados em: **{data_coleta}**")
 
 # Filtros
 marcas = sorted(df["marca"].dropna().unique())
