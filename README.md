@@ -19,16 +19,4 @@ Este projeto realiza a coleta diária de preços de notebooks com processador In
 - `GitHub Actions (automatização)`
 - `Streamlit (dashboard)`
   
----
-
-#Estrutura dos Arquivos
-
-`mercado-livre-notebooks-i5/
-├── script.py
-├── notebooks_mel.csv
-├── dashboard/
-│   └── app.py
-│   └── requirements.txt
-└── .github/
-    └── workflows/`
 
