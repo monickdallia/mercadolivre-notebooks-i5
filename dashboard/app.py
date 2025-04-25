@@ -13,7 +13,7 @@ import plotly.express as px
 # Configurações da página
 st.set_page_config(page_title="Dashboard Mercado Livre - Notebooks", layout="wide")
 st.title("💻 Dashboard - Notebooks Mercado Livre")
-st.markdown("Análise de preços de notebooks com dados coletados automaticamente via scraping.")
+st.markdown("Análise de preços de notebooks com dados coletados automaticamente via web scraping.")
 
 # Carregar dados com cache e tempo de expiração
 @st.cache_data(ttl=600)  # 10 minutos
@@ -34,31 +34,31 @@ st.markdown(f"📅 Dados coletados em: **{data_coleta}**")
 marcas = sorted(df["marca"].dropna().unique())
 marca_selecionada = st.sidebar.multiselect("🔍 Filtrar por marca", marcas, default=marcas)
 
-# Faixa de preço
-preco_min = int(df["preco"].min())
-preco_max = int(df["preco"].max())
+# Faixa de preço com base no preço promocional
+preco_min = int(df["preco_promocional"].min())
+preco_max = int(df["preco_promocional"].max())
 faixa_preco = st.sidebar.slider("💰 Filtrar por faixa de preço", preco_min, preco_max, (preco_min, preco_max))
 
-# Aplicar filtros
+# Aplicar filtros com base no preço promocional
 df_filtrado = df[
     (df["marca"].isin(marca_selecionada)) &
-    (df["preco"] >= faixa_preco[0]) &
-    (df["preco"] <= faixa_preco[1])
+    (df["preco_promocional"] >= faixa_preco[0]) &
+    (df["preco_promocional"] <= faixa_preco[1])
 ]
 
-# Gráfico 1: Preço médio por marca
-preco_medio = df_filtrado.groupby("marca")["preco"].mean().reset_index()
-fig1 = px.bar(preco_medio, x="marca", y="preco", title="💰 Preço Médio por Marca", text_auto='.2s')
-fig1.update_layout(xaxis_title="Marca", yaxis_title="Preço (R$)", template="plotly_white")
+# Gráfico 1: Preço médio por marca (promocional)
+preco_medio = df_filtrado.groupby("marca")["preco_promocional"].mean().reset_index()
+fig1 = px.bar(preco_medio, x="marca", y="preco_promocional", title="💰 Preço Médio por Marca (Promocional)", text_auto='.2s')
+fig1.update_layout(xaxis_title="Marca", yaxis_title="Preço Promocional (R$)", template="plotly_white")
 
-# Gráfico 2: Distribuição de preços
-fig2 = px.histogram(df_filtrado, x="preco", nbins=30, title="📊 Distribuição de Preços")
-fig2.update_layout(xaxis_title="Preço (R$)", yaxis_title="Quantidade", template="plotly_white")
+# Gráfico 2: Distribuição de preços promocionais
+fig2 = px.histogram(df_filtrado, x="preco_promocional", nbins=30, title="📊 Distribuição de Preços Promocionais")
+fig2.update_layout(xaxis_title="Preço Promocional (R$)", yaxis_title="Quantidade", template="plotly_white")
 
-# Gráfico 3: Top 10 mais caros
-top10 = df_filtrado.sort_values(by="preco", ascending=False).head(10)
-fig3 = px.bar(top10, x="preco", y="nome", orientation="h", title="🏷️ Top 10 Notebooks Mais Caros", text_auto='.2s')
-fig3.update_layout(xaxis_title="Preço (R$)", yaxis_title="Título", template="plotly_white")
+# Gráfico 3: Top 10 mais caros (promocional)
+top10 = df_filtrado.sort_values(by="preco_promocional", ascending=False).head(10)
+fig3 = px.bar(top10, x="preco_promocional", y="nome", orientation="h", title="🏷️ Top 10 Notebooks Mais Caros (Promo)", text_auto='.2s')
+fig3.update_layout(xaxis_title="Preço Promocional (R$)", yaxis_title="Título", template="plotly_white")
 
 # Layout de gráficos
 col1, col2 = st.columns(2)
@@ -67,12 +67,8 @@ col2.plotly_chart(fig2, use_container_width=True)
 
 st.plotly_chart(fig3, use_container_width=True)
 
-# Tabela interativa
-st.markdown("### 📋 Tabela de Dados Filtrados")
-colunas_visiveis = ["nome", "marca", "preco"]
-if "preco_promocional" in df.columns:
-    colunas_visiveis.append("preco_promocional")
-if "link" in df.columns:
-    colunas_visiveis.append("link")
+# Tabela interativa com ordenação pelo preço promocional
+st.markdown("### 📋 Tabela de Dados Filtrados (Preço Promocional)")
+colunas_visiveis = ["nome", "marca", "preco", "preco_promocional", "link"]
+st.dataframe(df_filtrado[colunas_visiveis].sort_values(by="preco_promocional", ascending=False), use_container_width=True)
 
-st.dataframe(df_filtrado[colunas_visiveis].sort_values(by="preco", ascending=False), use_container_width=True)
