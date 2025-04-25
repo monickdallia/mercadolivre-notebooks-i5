@@ -35,29 +35,29 @@ marcas = sorted(df["marca"].dropna().unique())
 marca_selecionada = st.sidebar.multiselect("🔍 Filtrar por marca", marcas, default=marcas)
 
 # Faixa de preço com base no preço promocional
-preco_min = int(df["preco_promocional"].min())
-preco_max = int(df["preco_promocional"].max())
+preco_min = int(df["Preco_promocional"].min())
+preco_max = int(df["Preco_promocional"].max())
 faixa_preco = st.sidebar.slider("💰 Filtrar por faixa de preço", preco_min, preco_max, (preco_min, preco_max))
 
 # Aplicar filtros com base no preço promocional
 df_filtrado = df[
     (df["marca"].isin(marca_selecionada)) &
-    (df["preco_promocional"] >= faixa_preco[0]) &
-    (df["preco_promocional"] <= faixa_preco[1])
+    (df["Preco_promocional"] >= faixa_preco[0]) &
+    (df["Preco_promocional"] <= faixa_preco[1])
 ]
 
 # Gráfico 1: Preço médio por marca (promocional)
-preco_medio = df_filtrado.groupby("marca")["preco_promocional"].mean().reset_index()
-fig1 = px.bar(preco_medio, x="marca", y="preco_promocional", title="💰 Preço Médio por Marca (Promocional)", text_auto='.2s')
+preco_medio = df_filtrado.groupby("marca")["Preco_promocional"].mean().reset_index()
+fig1 = px.bar(preco_medio, x="marca", y="Preco_promocional", title="💰 Preço Médio por Marca (Promocional)", text_auto='.2s')
 fig1.update_layout(xaxis_title="Marca", yaxis_title="Preço Promocional (R$)", template="plotly_white")
 
 # Gráfico 2: Distribuição de preços promocionais
-fig2 = px.histogram(df_filtrado, x="preco_promocional", nbins=30, title="📊 Distribuição de Preços Promocionais")
+fig2 = px.histogram(df_filtrado, x="Preco_promocional", nbins=30, title="📊 Distribuição de Preços Promocionais")
 fig2.update_layout(xaxis_title="Preço Promocional (R$)", yaxis_title="Quantidade", template="plotly_white")
 
 # Gráfico 3: Top 10 mais caros (promocional)
-top10 = df_filtrado.sort_values(by="preco_promocional", ascending=False).head(10)
-fig3 = px.bar(top10, x="preco_promocional", y="nome", orientation="h", title="🏷️ Top 10 Notebooks Mais Caros (Promo)", text_auto='.2s')
+top10 = df_filtrado.sort_values(by="Preco_promocional", ascending=False).head(10)
+fig3 = px.bar(top10, x="Preco_promocional", y="nome", orientation="h", title="🏷️ Top 10 Notebooks Mais Caros (Promo)", text_auto='.2s')
 fig3.update_layout(xaxis_title="Preço Promocional (R$)", yaxis_title="Título", template="plotly_white")
 
 # Layout de gráficos
@@ -68,7 +68,7 @@ col2.plotly_chart(fig2, use_container_width=True)
 st.plotly_chart(fig3, use_container_width=True)
 
 # Tabela interativa com ordenação pelo preço promocional
-st.markdown("### 📋 Tabela de Dados Filtrados (Preço Promocional)")
-colunas_visiveis = ["nome", "marca", "preco", "preco_promocional", "link"]
+st.markdown("### 📋 Tabela de Dados Filtrados")
+colunas_visiveis = ["nome", "marca", "preco", "Preco_promocional", "link"]
 st.dataframe(df_filtrado[colunas_visiveis].sort_values(by="preco_promocional", ascending=False), use_container_width=True)
 
